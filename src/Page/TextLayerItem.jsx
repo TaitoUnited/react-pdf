@@ -95,7 +95,7 @@ export class TextLayerItemInternal extends PureComponent {
 
     // NOTE: Changed in attempt to remove text layer offset
     // let transform = `scaleX(${targetWidth / actualWidth})`;
-    let transform = `scaleX(5)`;
+    let transform = `scaleX(1)`;
 
     const ascent = fontData ? fontData.ascent : 0;
     if (ascent) {
@@ -119,7 +119,7 @@ export class TextLayerItemInternal extends PureComponent {
         style={{
           height: '1em',
           fontFamily: 'sans-serif',
-          fontSize: `${fontSize * scale}px`,
+          fontSize: `${fontSize}px`,
           position: 'absolute',
           top: `${top * scale}px`,
           left: `${left * scale}px`,
