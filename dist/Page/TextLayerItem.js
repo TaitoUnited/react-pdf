@@ -144,9 +144,9 @@ function (_PureComponent) {
                 element.style.fontFamily = "".concat(fontName, ", ").concat(fallbackFontName);
                 targetWidth = width * scale;
                 actualWidth = this.getElementWidth(element); // NOTE: Changed in attempt to remove text layer offset
-                // let transform = `scaleX(${targetWidth / actualWidth})`;
 
-                transform = "scaleX(1)";
+                transform = "scaleX(".concat(targetWidth / actualWidth, ")"); // let transform = `scaleX(1)`;
+
                 ascent = fontData ? fontData.ascent : 0;
 
                 if (ascent) {
@@ -185,7 +185,7 @@ function (_PureComponent) {
         style: {
           height: '1em',
           fontFamily: 'sans-serif',
-          fontSize: "".concat(fontSize, "px"),
+          fontSize: "".concat(fontSize * scale, "px"),
           position: 'absolute',
           top: "".concat(top * scale, "px"),
           left: "".concat(left * scale, "px"),
