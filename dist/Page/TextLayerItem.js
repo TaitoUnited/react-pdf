@@ -185,7 +185,7 @@ function (_PureComponent) {
         style: {
           height: '1em',
           fontFamily: 'sans-serif',
-          fontSize: "".concat(fontSize * scale, "px"),
+          fontSize: "".concat(fontSize, "px"),
           position: 'absolute',
           top: "".concat(top * scale, "px"),
           left: "".concat(left * scale, "px"),
