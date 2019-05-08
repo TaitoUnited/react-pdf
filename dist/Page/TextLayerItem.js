@@ -23,7 +23,7 @@ var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/creat
 
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
 
-var _getPrototypeOf3 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
 
 var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));
 
@@ -44,24 +44,20 @@ var TextLayerItemInternal =
 function (_PureComponent) {
   (0, _inherits2["default"])(TextLayerItemInternal, _PureComponent);
 
-  function TextLayerItemInternal() {
-    var _getPrototypeOf2;
-
+  function TextLayerItemInternal(props) {
     var _this;
 
     (0, _classCallCheck2["default"])(this, TextLayerItemInternal);
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = (0, _possibleConstructorReturn2["default"])(this, (_getPrototypeOf2 = (0, _getPrototypeOf3["default"])(TextLayerItemInternal)).call.apply(_getPrototypeOf2, [this].concat(args)));
+    _this = (0, _possibleConstructorReturn2["default"])(this, (0, _getPrototypeOf2["default"])(TextLayerItemInternal).call(this, props));
     (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "getElementWidth", function (element) {
       var _assertThisInitialize = (0, _assertThisInitialized2["default"])(_this),
           sideways = _assertThisInitialize.sideways;
 
-      return element.getBoundingClientRect()[sideways ? 'height' : 'width'];
+      return element.getBoundingClientRect()[sideways ? "height" : "width"];
     });
+    _this.state = {
+      actualWidth: 1
+    };
     return _this;
   }
 
@@ -132,7 +128,7 @@ function (_PureComponent) {
                 return _context2.abrupt("return");
 
               case 3:
-                element.style.transform = '';
+                element.style.transform = "";
                 _this$props = this.props, fontName = _this$props.fontName, scale = _this$props.scale, width = _this$props.width;
                 element.style.fontFamily = "".concat(fontName, ", sans-serif");
                 _context2.next = 8;
@@ -140,10 +136,13 @@ function (_PureComponent) {
 
               case 8:
                 fontData = _context2.sent;
-                fallbackFontName = fontData ? fontData.fallbackName : 'sans-serif';
+                fallbackFontName = fontData ? fontData.fallbackName : "sans-serif";
                 element.style.fontFamily = "".concat(fontName, ", ").concat(fallbackFontName);
                 targetWidth = width * scale;
-                actualWidth = this.getElementWidth(element); // NOTE: Changed in attempt to remove text layer offset
+                actualWidth = this.getElementWidth(element);
+                this.setState({
+                  actualWidth: actualWidth
+                }); // NOTE: Changed in attempt to remove text layer offset
 
                 transform = "scaleX(".concat(targetWidth / actualWidth, ")"); // let transform = `scaleX(1)`;
 
@@ -155,7 +154,7 @@ function (_PureComponent) {
 
                 element.style.transform = transform;
 
-              case 17:
+              case 18:
               case "end":
                 return _context2.stop();
             }
@@ -174,6 +173,7 @@ function (_PureComponent) {
     value: function render() {
       var _this2 = this;
 
+      var actualWidth = this.state;
       var fontSize = this.fontSize,
           top = this.top,
           left = this.left;
@@ -183,15 +183,15 @@ function (_PureComponent) {
           text = _this$props2.str;
       return _react["default"].createElement("span", {
         style: {
-          height: '1em',
-          fontFamily: 'sans-serif',
+          fontFamily: "sans-serif",
           fontSize: "".concat(fontSize * scale, "px"),
-          position: 'absolute',
+          position: "absolute",
           top: "".concat(top * scale, "px"),
           left: "".concat(left * scale, "px"),
-          transformOrigin: 'left bottom',
-          whiteSpace: 'pre',
-          pointerEvents: 'all'
+          width: "".concat(actualWidth, "px"),
+          transformOrigin: "left bottom",
+          whiteSpace: "pre",
+          pointerEvents: "all"
         },
         ref: function ref(_ref) {
           _this2.item = _ref;
@@ -265,10 +265,10 @@ function (_PureComponent) {
       var _viewport$viewBox = (0, _slicedToArray2["default"])(viewport.viewBox, 4),
 
       /* xMin */
-      yMin = _viewport$viewBox[1],
-
+      yMin
       /* xMax */
-      yMax = _viewport$viewBox[3];
+      = _viewport$viewBox[1],
+          yMax = _viewport$viewBox[3];
 
       return defaultSideways ? x + offsetX + yMin : yMax - (y + offsetY);
     }
