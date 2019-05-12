@@ -56,7 +56,8 @@ function (_PureComponent) {
       return element.getBoundingClientRect()[sideways ? "height" : "width"];
     });
     _this.state = {
-      actualWidth: 1
+      actualWidth: 1,
+      targetWidth: 1
     };
     return _this;
   }
@@ -141,7 +142,9 @@ function (_PureComponent) {
                 targetWidth = width * scale;
                 actualWidth = this.getElementWidth(element);
                 this.setState({
-                  actualWidth: actualWidth
+                  actualWidth: actualWidth,
+                  targetWidth: targetWidth,
+                  width: width
                 }); // NOTE: Changed in attempt to remove text layer offset
 
                 transform = "scaleX(".concat(targetWidth / actualWidth, ")"); // let transform = `scaleX(1)`;
@@ -173,7 +176,10 @@ function (_PureComponent) {
     value: function render() {
       var _this2 = this;
 
-      var actualWidth = this.state;
+      var _this$state = this.state,
+          actualWidth = _this$state.actualWidth,
+          targetWidth = _this$state.targetWidth,
+          width = _this$state.width;
       var fontSize = this.fontSize,
           top = this.top,
           left = this.left;
@@ -181,7 +187,7 @@ function (_PureComponent) {
           customTextRenderer = _this$props2.customTextRenderer,
           scale = _this$props2.scale,
           text = _this$props2.str;
-      return _react["default"].createElement("span", {
+      return _react["default"].createElement("div", null, _react["default"].createElement("span", {
         style: {
           fontFamily: "sans-serif",
           fontSize: "".concat(fontSize * scale, "px"),
@@ -196,7 +202,11 @@ function (_PureComponent) {
         ref: function ref(_ref) {
           _this2.item = _ref;
         }
-      }, customTextRenderer ? customTextRenderer(this.props) : text);
+      }, customTextRenderer ? customTextRenderer(this.props) : text), _react["default"].createElement("span", {
+        style: {
+          display: "none"
+        }
+      }, "targetWidth: ".concat(targetWidth, ", actualWidth: ").concat(actualWidth, ", width: ").concat(width)));
     }
   }, {
     key: "unrotatedViewport",

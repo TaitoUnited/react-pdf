@@ -8,7 +8,7 @@ import { isPage, isRotate } from "../shared/propTypes";
 export class TextLayerItemInternal extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = { actualWidth: 1 };
+    this.state = { actualWidth: 1, targetWidth: 1 };
   }
 
   componentDidMount() {
@@ -113,6 +113,8 @@ export class TextLayerItemInternal extends PureComponent {
     const actualWidth = this.getElementWidth(element);
     this.setState({
       actualWidth,
+      targetWidth,
+      width,
     });
 
     // NOTE: Changed in attempt to remove text layer offset
@@ -127,35 +129,44 @@ export class TextLayerItemInternal extends PureComponent {
     element.style.transform = transform;
   }
 
-  getElementWidth = (element) => {
+  getElementWidth = element => {
     const { sideways } = this;
     return element.getBoundingClientRect()[sideways ? "height" : "width"];
   };
 
   render() {
-    const actualWidth = this.state;
+    const { actualWidth, targetWidth, width } = this.state;
     const { fontSize, top, left } = this;
     const { customTextRenderer, scale, str: text } = this.props;
 
     return (
-      <span
-        style={{
-          fontFamily: "sans-serif",
-          fontSize: `${fontSize * scale}px`,
-          position: "absolute",
-          top: `${top * scale}px`,
-          left: `${left * scale}px`,
-          width: `${actualWidth}px`,
-          transformOrigin: "left bottom",
-          whiteSpace: "pre",
-          pointerEvents: "all"
-        }}
-        ref={ref => {
-          this.item = ref;
-        }}
-      >
-        {customTextRenderer ? customTextRenderer(this.props) : text}
-      </span>
+      <div>
+        <span
+          style={{
+            fontFamily: "sans-serif",
+            fontSize: `${fontSize * scale}px`,
+            position: "absolute",
+            top: `${top * scale}px`,
+            left: `${left * scale}px`,
+            width: `${actualWidth}px`,
+            transformOrigin: "left bottom",
+            whiteSpace: "pre",
+            pointerEvents: "all"
+          }}
+          ref={ref => {
+            this.item = ref;
+          }}
+        >
+          {customTextRenderer ? customTextRenderer(this.props) : text}
+        </span>
+        <span
+          style={{
+            display: "none"
+          }}
+        >
+          {`targetWidth: ${targetWidth}, actualWidth: ${actualWidth}, width: ${width}`}
+        </span>
+      </div>
     );
   }
 }
